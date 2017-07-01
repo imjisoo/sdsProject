@@ -91,7 +91,7 @@
 						<td colspan="2">
 							<input class="w3-radio" type="radio" name="userType" value="CUS" /> CUSTOMER
 							<input class="w3-radio" type="radio" name="userType" value="VEN" /> VENDOR
-							<input class="w3-radio" type="radio" name="userType" value="FAC" /> FAC
+							<input class="w3-radio" type="radio" name="userType" value="FAC" /> FACTORY
 						</td>
 					</tr>
 					<tr>
