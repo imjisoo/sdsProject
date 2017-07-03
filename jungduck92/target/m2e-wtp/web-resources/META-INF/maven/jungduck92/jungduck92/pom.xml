@@ -32,35 +32,39 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>4.1.5.RELEASE</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>4.1.5.RELEASE</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>4.1.5.RELEASE</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+<<<<<<< HEAD
 			<version>4.1.6R5ELEASE</version>
+=======
+			<version>4.1.5.RELEASE</version>
+>>>>>>> 4a5e6a815018f5e3888fd6dd583223b670c3d720
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>4.1.6.RELEASE</version>
+			<version>4.1.5.RELEASE</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
