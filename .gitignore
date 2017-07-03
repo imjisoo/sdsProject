@@ -11,3 +11,6 @@
 */cache/*
 */cache/!index.html
 
+/.recommenders/
+*/pom.properteis
+/target/m2e-wtp/web-resources/META-INF/maven/jungduck92/jungduck92/pom.xml
