@@ -1,17 +1,61 @@
 package controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import repository.MemberDAO;
+import vo.MemberVO;
+
 @Controller
 public class MemberController {
+	
+	@Autowired
+	private MemberDAO dao;
 	
 	@RequestMapping("/joinForm.jd")
 	public String joinForm () {
 		
 		return "join_form";
+		
+	}
+	
+	@RequestMapping(value="/idCheck.jd", method=RequestMethod.POST)
+	public void idCheck (String userId, HttpServletResponse response) {
+		
+		MemberVO member = dao.getMemberById(userId);
+		
+		String result = "{";
+		
+		if (member == null) {
+			
+			result += "\"result\":\"<h1>YOU CAN USE THIS ID</h1>\",";
+			result += "\"val\":\"true\"";
+			
+		} else {
+			
+			result += "\"result\":\"<h1 class='red'>ALREADY EXIST</h1>\",";
+			result += "\"val\":\"false\"";
+			
+		}
+		
+		result += "}";
+		
+		try {
+			
+			response.getWriter().print(result);
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			
+		}
 		
 	}
 	

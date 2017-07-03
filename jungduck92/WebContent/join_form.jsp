@@ -41,8 +41,27 @@
 		});
 		
 		$("#idCheck").click(function () {
-			
-			$("#idCheckPopUp").css("display", "block");
+			$.ajax({
+				type : "POST",
+				url : "idCheck.jd",
+				data : {"userId" : $("input[name='userId']").val()},
+				success : function (responseData) {
+					
+					var data = JSON.parse(responseData);
+					
+					if (data.val == "false") {
+						
+						$("input[name='userId']").val("");
+						
+					}
+					
+					$("#idCheckResult").html(data.result);
+					$("#idCheckPopUp").css("display", "block");
+				},
+				error : function (e) {
+					alert(e.responseText);
+				}
+			});
 			
 		});
 		
@@ -115,7 +134,7 @@
 				<span onclick="document.getElementById('idCheckPopUp').style.display='none'" class="w3-button w3-display-topright">&times;</span>
 				<h2>WARNING</h2>
 			</header>
-			<div class="w3-container">
+			<div class="w3-container" id="idCheckResult">
 				
 			</div>
 			<footer class="w3-container w3-teal w3-right-align"><h5>@jungduck92</h5></footer>
