@@ -2,4 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.MemberMapper">
 	
+	<select id="getMemberById" parameterType="String" resultMap="memberResultMap">
+		SELECT MEMBER_IDX,
+			MEMBER_ID,
+			MEMBER_PW,
+			MEMBER_EMAIL,
+			MEMBER_TYPE
+		FROM MEMBER
+		WHERE MEMBER_ID = #{userId}
+	</select>
+	
+	<resultMap type="MemberVO" id="memberResultMap">
+		<result column="MEMBER_IDX" property="memberIdx"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="MEMBER_PW" property="memberPw"/>
+		<result column="MEMBER_EMAIL" property="memberEmail"/>
+		<result column="MEMBER_TYPE" property="memberType"/>
+	</resultMap>
+	
 </mapper>
