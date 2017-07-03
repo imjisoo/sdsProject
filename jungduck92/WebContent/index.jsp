@@ -40,7 +40,7 @@ span:HOVER {
 						</a>
 					</div>
 					<div class="w3-twothird w3-right-align">
-						<span>forget your ID or PW?</span>
+						<a href="findForm.jd" style="text-decoration: none;"><span>forget your ID or PW?</span></a>
 					</div>
 				</div>
 			</form>

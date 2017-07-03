@@ -26,4 +26,11 @@ public class MemberController {
 		
 	}
 	
+	@RequestMapping("/findForm.jd")
+	public String findForm () {
+		
+		return "find_form";
+		
+	}
+	
 }
