@@ -12,6 +12,26 @@
 		WHERE MEMBER_ID = #{userId}
 	</select>
 	
+	<insert id="createMember" parameterType="java.util.Map">
+		INSERT INTO MEMBER (
+			MEMBER_IDX,
+			MEMBER_ID,
+			MEMBER_PW,
+			MEMBER_EMAIL,
+			MEMBER_TYPE
+		) VALUES (
+			(
+				SELECT #{userType}||TO_CHAR(SYSDATE, 'YYMMDD')||LPAD(MAX(TO_NUMBER(SUBSTR(MEMBER_IDX, -3)))+1, 3, 0) 
+				FROM MEMBER 
+				WHERE MEMBER_IDX LIKE '%'||TO_CHAR(SYSDATE, 'YYMMDD')||'%' 
+			),
+			#{userId},
+			#{userPw},
+			#{userEmail},
+			#{userType}
+		)
+	</insert>
+	
 	<resultMap type="MemberVO" id="memberResultMap">
 		<result column="MEMBER_IDX" property="memberIdx"/>
 		<result column="MEMBER_ID" property="memberId"/>

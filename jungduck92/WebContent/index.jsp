@@ -4,7 +4,7 @@
 <head>
 <title>JUNGDUCK92</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="css/main.css">
 <style type="text/css">
 #container {
 	width: 500px;

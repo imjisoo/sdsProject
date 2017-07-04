@@ -1,5 +1,7 @@
 package repository;
 
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,14 @@ public class MemberDAO {
 		MemberMapper mapper = sessionTemplate.getMapper(MemberMapper.class);
 		
 		return mapper.getMemberById(userId);
+		
+	}
+	
+	public int createMember (Map<String, Object> memberInfos) {
+		
+		MemberMapper mapper = sessionTemplate.getMapper(MemberMapper.class);
+		
+		return mapper.createMember(memberInfos);
 		
 	}
 	

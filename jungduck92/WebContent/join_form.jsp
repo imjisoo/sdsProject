@@ -5,7 +5,7 @@
 <head>
 <title>JUNGDUCK92</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="css/main.css">
 <style type="text/css">
 #container {
 	width: 800px;
@@ -26,25 +26,32 @@
 			
 			var userPwCheck = $("input[name='userPwCheck']").val();
 			
-			if (userPw != userPwCheck) {
+			if (userPw.length != 0 && userPwCheck.length != 0) {
 				
-				$("#checkPw").html("비밀번호가 일치하지 않습니다.");
-				$("#checkPw").addClass("red");
-				
-			} else {
-				
-				$("#checkPw").html("비밀번호가 일치합니다");
-				$("#checkPw").removeClass("red");
+				if (userPw != userPwCheck) {
+					
+					$("#checkPw").html("비밀번호가 일치하지 않습니다.");
+					$("#checkPw").addClass("red");
+					
+				} else {
+					
+					$("#checkPw").html("비밀번호가 일치합니다");
+					$("#checkPw").removeClass("red");
+					
+				}
 				
 			}
 			
 		});
 		
-		$("#idCheck").click(function () {
+		$("input[name='userId']").change(function () {
+			
+			var userId = $("input[name='userId']").val();
+			
 			$.ajax({
 				type : "POST",
 				url : "idCheck.jd",
-				data : {"userId" : $("input[name='userId']").val()},
+				data : {"userId" : userId},
 				success : function (responseData) {
 					
 					var data = JSON.parse(responseData);
@@ -52,16 +59,144 @@
 					if (data.val == "false") {
 						
 						$("input[name='userId']").val("");
+						setTimeout(function() { $("input[name='userId']").focus() }, 1000);
+						
+						$("#idCheck").html(userId+"는 이미 사용 중인 아이디입니다.");
+						$("#idCheck").addClass("red");
+						
+					} else {
+						
+						$("#idCheck").html("사용 가능한 아이디입니다.");
+						$("#idCheck").removeClass("red");
 						
 					}
 					
-					$("#idCheckResult").html(data.result);
-					$("#idCheckPopUp").css("display", "block");
 				},
 				error : function (e) {
+					
 					alert(e.responseText);
+					
 				}
 			});
+			
+		});
+		
+		$("input[type='submit']").click(function () {
+			
+			var userId = $("input[name='userId']").val();
+			var userPw = $("input[name='userPw']").val();
+			var userPwCheck = $("input[name='userPwCheck']").val();
+			var userEmailId = $("input[name='userEmailId']").val();
+			var userType = $("input[name='userType']").val();
+			
+			if (userId.length == 0) {
+				
+				$("#warningResult").html("<h1 class='red'>INPUT USER ID</h1>");
+				$("#warningPopUp").css("display", "block");
+				
+				$("input[name='userId']").val("");
+				setTimeout(function() { $("input[name='userId']").focus() }, 1000);
+				
+				return false;
+				
+			}
+			
+			var trimUserId = userId.trim().replace(/\s/g,"");
+			
+			if (userId != trimUserId) {
+				
+				$("#warningResult").html("<h1 class='red'>NOT ALLOW SPACES IN ID</h1>");
+				$("#warningPopUp").css("display", "block");
+				
+				$("input[name='userId']").val("");
+				setTimeout(function() { $("input[name='userId']").focus() }, 1000);
+				
+				return false;
+				
+			}
+			
+			if (userPw.length < 4) {
+				
+				$("#warningResult").html("<h1 class='red'>유효하지 않은 비밀번호입니다.</h1>");
+				$("#warningPopUp").css("display", "block");
+				
+				$("input[name='userPw']").val("");
+				$("input[name='userPwCheck']").val("");
+				setTimeout(function() { $("input[name='userPw']").focus() }, 1000);
+				
+				return false;
+				
+			} else {
+				
+				var containNumber = 0;
+				var containAlphabet = 0;
+				
+				for (var i = 0; i < userPw.length; i++) {
+					
+					var charCode = userPw.charCodeAt(i);
+					
+					if (charCode > 47 && charCode < 58) {
+						
+						containNumber = 1;
+						
+					} else if ((charCode > 64 && charCode < 92) || (charCode > 96 && charCode < 123)) {
+						
+						containAlphabet = 1;
+						
+					}
+					
+				}
+				
+				if (containNumber*containAlphabet == 0) {
+					
+					$("#warningResult").html("<h1 class='red'>유효하지 않은 비밀번호입니다.</h1>");
+					$("#warningPopUp").css("display", "block");
+					
+					$("input[name='userPw']").val("");
+					$("input[name='userPwCheck']").val("");
+					setTimeout(function() { $("input[name='userPw']").focus() }, 1000);
+					
+					return false;
+					
+				}
+				
+			}
+			
+			if (userEmailId.length == 0) {
+				
+				$("#warningResult").html("<h1 class='red'>INPUT YOUR EMAIL</h1>");
+				$("#warningPopUp").css("display", "block");
+				
+				setTimeout(function() { $("input[name='userEmailId']").focus() }, 1000);
+				
+				return false;
+				
+			}
+			
+			var trimUserEmailId = userEmailId.trim().replace(/\s/g,"");
+			
+			if (userEmailId != trimUserEmailId) {
+				
+				$("#warningResult").html("<h1 class='red'>NOT ALLOW SPACES IN EMAIL</h1>");
+				$("#warningPopUp").css("display", "block");
+				
+				$("input[name='userEmailId']").val("");
+				setTimeout(function() { $("input[name='userEmailId']").focus() }, 1000);
+				
+				return false;
+				
+			}
+			
+			if (userType.length == 0) {
+				
+				$("#warningResult").html("<h1 class='red'>INPUT YOUR USER TYPE</h1>");
+				$("#warningPopUp").css("display", "block");
+				
+				return false;
+				
+			}
+			
+			return true;
 			
 		});
 		
@@ -80,12 +215,15 @@
 						<th>ID</th>
 						<td>
 							<input type="text" name="userId" size="20" />
-							<input type="button" onclick="javascript:void(0)" id="idCheck" value="중복확인" />
+							<span id="idCheck"></span>
 						</td>
 					</tr>
 					<tr>
 						<th>PW</th>
-						<td><input type="password" name="userPw" class="pwCheck" /></td>
+						<td>
+							<input type="password" name="userPw" class="pwCheck" />
+							<span>4자리 이상, 문자와 숫자를 모두 포함해야 합니다.</span>
+						</td>
 					</tr>
 					<tr>
 						<th>PW CHECK</th>
@@ -128,17 +266,17 @@
 			</form>
 		</div>
 		<footer class="w3-container w3-teal w3-right-align"><h5>@jungduck92</h5></footer>
-	</div>
-	<div id="idCheckPopUp" class="w3-modal">
-		<div class="w3-modal-content">
-			<header class="w3-container w3-teal"> 
-				<span onclick="document.getElementById('idCheckPopUp').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-				<h2>WARNING</h2>
-			</header>
-			<div class="w3-container" id="idCheckResult">
-				
+		<div id="warningPopUp" class="w3-modal">
+			<div class="w3-modal-content">
+				<header class="w3-container w3-teal"> 
+					<span onclick="document.getElementById('warningPopUp').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+					<h2>WARNING</h2>
+				</header>
+				<div class="w3-container" id="warningResult">
+					
+				</div>
+				<footer class="w3-container w3-teal w3-right-align"><h5>@jungduck92</h5></footer>
 			</div>
-			<footer class="w3-container w3-teal w3-right-align"><h5>@jungduck92</h5></footer>
 		</div>
 	</div>
 </body>
