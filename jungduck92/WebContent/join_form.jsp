@@ -164,7 +164,7 @@
 			
 			if (userEmailId.length == 0) {
 				
-				$("#warningResult").html("<h1 class='red'>INPUT YOUR EMAIL</h1>");
+				$("#warningResult").html("<h1 class='red'>이메일을 입력하시오</h1>");
 				$("#warningPopUp").css("display", "block");
 				
 				setTimeout(function() { $("input[name='userEmailId']").focus() }, 1000);
@@ -177,7 +177,7 @@
 			
 			if (userEmailId != trimUserEmailId) {
 				
-				$("#warningResult").html("<h1 class='red'>NOT ALLOW SPACES IN EMAIL</h1>");
+				$("#warningResult").html("<h1 class='red'>이메일 주소의 공백을 확인하세요</h1>");
 				$("#warningPopUp").css("display", "block");
 				
 				$("input[name='userEmailId']").val("");
@@ -189,7 +189,7 @@
 			
 			if (userType.length == 0) {
 				
-				$("#warningResult").html("<h1 class='red'>INPUT YOUR USER TYPE</h1>");
+				$("#warningResult").html("<h1 class='red'>USER TYPE을 입력하시오</h1>");
 				$("#warningPopUp").css("display", "block");
 				
 				return false;

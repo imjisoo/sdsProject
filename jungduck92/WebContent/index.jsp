@@ -47,7 +47,7 @@ span:HOVER {
 			</form>
 		</div>
 		<footer class="w3-container w3-teal w3-right-align"><h5>@jungduck92</h5></footer>
-		<c:if test="${not empty loginResult }">
+		<c:if test="${not empty loginStatement }">
 			<div id="warningPopUp" class="w3-modal" style="display: block;">
 				<div class="w3-modal-content">
 					<header class="w3-container w3-teal"> 
@@ -55,7 +55,7 @@ span:HOVER {
 						<h2>WARNING</h2>
 					</header>
 					<div class="w3-container" id="warningResult">
-						${loginResult }
+						${loginStatement }
 					</div>
 					<footer class="w3-container w3-teal w3-right-align"><h5>@jungduck92</h5></footer>
 				</div>

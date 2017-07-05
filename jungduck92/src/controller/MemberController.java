@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import repository.MemberDAO;
+import service.MemberService;
 import vo.MemberVO;
 
 @Controller
 public class MemberController {
 	
 	@Autowired
-	private MemberDAO dao;
+	private MemberService service;
 	
 	@RequestMapping("/joinForm.jd")
 	public String joinForm () {
@@ -33,27 +34,9 @@ public class MemberController {
 	@RequestMapping(value="/idCheck.jd", method=RequestMethod.POST)
 	public void idCheck (String userId, HttpServletResponse response) {
 		
-		MemberVO member = dao.getMemberById(userId);
-		
-		String result = "{";
-		
-		if (member == null) {
-			
-			result += "\"result\":\"<h1>YOU CAN USE THIS ID</h1>\",";
-			result += "\"val\":\"true\"";
-			
-		} else {
-			
-			result += "\"result\":\"<h1 class='red'>ALREADY EXIST</h1>\",";
-			result += "\"val\":\"false\"";
-			
-		}
-		
-		result += "}";
-		
 		try {
 			
-			response.getWriter().print(result);
+			response.getWriter().print(service.idCheck(userId));
 			
 		} catch (IOException e) {
 			
@@ -64,21 +47,20 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/join.jd", method=RequestMethod.POST)
-	public ModelAndView join (@RequestParam Map<String, Object> joinInfos, HttpServletRequest request) {
+	public ModelAndView join (@RequestParam Map<String, Object> joinInfos) {
 		
 		ModelAndView mv = new ModelAndView();
 		
-		Map<String, Object> memberInfos = new HashMap<String, Object>();
-		
-		memberInfos.put("userId", joinInfos.get("userId").toString());
-		memberInfos.put("userPw", joinInfos.get("userPw").toString());
-		memberInfos.put("userEmail", joinInfos.get("userEmailId").toString()+"@"+joinInfos.get("userEmailAddress").toString());
-		memberInfos.put("userType", joinInfos.get("userType").toString());
-		
-		int result = dao.createMember(memberInfos);
-		
-		mv.addObject("memberId", joinInfos.get("userId").toString());
-		mv.setViewName("join_success");
+		if (service.join(joinInfos)) {
+			
+			mv.addObject("memberId", joinInfos.get("userId").toString());
+			mv.setViewName("join_success");
+			
+		} else {
+			
+			mv.setViewName("join_form");
+			
+		}
 		
 		return mv;
 		
@@ -96,41 +78,22 @@ public class MemberController {
 		
 		ModelAndView mv = new ModelAndView();
 		
-		MemberVO member = dao.getMemberById(userInfos.get("userId").toString());
+		Map<String, Object> login = service.login(userInfos);
 		
-		if (member == null) {
+		if (login.get("loginResult").toString().equals("false")) {
 			
-			mv.addObject("loginResult", "<h1>아이디가 존재하지 않습니다</h1>");
+			mv.addObject("loginStatement", login.get("loginStatement"));
 			mv.setViewName("index");
 			
-		} else if (!member.getMemberPw().equals(userInfos.get("userPw").toString())) {
+		} else if (login.get("loginResult").toString().equals("true")) {
 			
-			mv.addObject("loginResult", "<h1>아이디와 비밀번호가 일치하지 않습니다</h1>");
-			mv.setViewName("index");
+			mv.addObject("member", login.get("member"));
+			mv.setViewName(login.get("viewName").toString());
 			
 		} else {
 			
-			if (member.getMemberType().equals("CUS")) {
-				
-				mv.addObject("member", member);
-				mv.setViewName("cus_index");
-				
-			} else if (member.getMemberType().equals("VEN")) {
-				
-				mv.addObject("member", member);
-				mv.setViewName("ven_index");
-				
-			} else if (member.getMemberType().equals("FAC")) {
-				
-				mv.addObject("member", member);
-				mv.setViewName("fac_index");
-				
-			} else {
-				
-				mv.addObject("loginResult", "<h1>로그인 에러!! 관리자에게 문의</h1>");
-				mv.setViewName("index");
-				
-			}
+			mv.addObject("loginStatement", "로그인 실패 관리자에게 문의하세요");
+			mv.setViewName("index");
 			
 		}
 		
