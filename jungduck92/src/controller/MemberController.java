@@ -77,10 +77,17 @@ public class MemberController {
 		
 		int result = dao.createMember(memberInfos);
 		
-		mv.addObject("memberResult", result);
+		mv.addObject("memberId", joinInfos.get("userId").toString());
 		mv.setViewName("join_success");
 		
 		return mv;
+		
+	}
+	
+	@RequestMapping("/index.jd")
+	public String index () {
+		
+		return "index";
 		
 	}
 	

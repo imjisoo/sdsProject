@@ -29,7 +29,7 @@ span:HOVER {
 					</tr>
 					<tr>
 						<th>PW</th>
-						<td><input type="text" name="userPw" /></td>
+						<td><input type="password" name="userPw" /></td>
 					</tr>
 				</table>
 				<div>
