@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
+	<h1>${result }</h1>
 	<div class="w3-main w3-content w3-padding" style="max-width: 1000px; margin-top: 100px;">
 		<div class="w3-bar w3-border w3-light-grey">
 			<a href="javascript:void(0)" class="w3-bar-item w3-button w3-teal">LIST</a>

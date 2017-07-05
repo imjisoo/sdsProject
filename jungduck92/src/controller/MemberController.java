@@ -92,11 +92,47 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/login.jd", method=RequestMethod.POST)
-	public ModelAndView login (@RequestParam Map<String, Object> joinInfos) {
+	public ModelAndView login (@RequestParam Map<String, Object> userInfos) {
 		
 		ModelAndView mv = new ModelAndView();
 		
-		mv.setViewName("main_list");
+		MemberVO member = dao.getMemberById(userInfos.get("userId").toString());
+		
+		if (member == null) {
+			
+			mv.addObject("loginResult", "<h1>아이디가 존재하지 않습니다</h1>");
+			mv.setViewName("index");
+			
+		} else if (!member.getMemberPw().equals(userInfos.get("userPw").toString())) {
+			
+			mv.addObject("loginResult", "<h1>아이디와 비밀번호가 일치하지 않습니다</h1>");
+			mv.setViewName("index");
+			
+		} else {
+			
+			if (member.getMemberType().equals("CUS")) {
+				
+				mv.addObject("member", member);
+				mv.setViewName("cus_index");
+				
+			} else if (member.getMemberType().equals("VEN")) {
+				
+				mv.addObject("member", member);
+				mv.setViewName("ven_index");
+				
+			} else if (member.getMemberType().equals("FAC")) {
+				
+				mv.addObject("member", member);
+				mv.setViewName("fac_index");
+				
+			} else {
+				
+				mv.addObject("loginResult", "<h1>로그인 에러!! 관리자에게 문의</h1>");
+				mv.setViewName("index");
+				
+			}
+			
+		}
 		
 		return mv;
 		

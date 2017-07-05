@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +47,20 @@ span:HOVER {
 			</form>
 		</div>
 		<footer class="w3-container w3-teal w3-right-align"><h5>@jungduck92</h5></footer>
+		<c:if test="${not empty loginResult }">
+			<div id="warningPopUp" class="w3-modal" style="display: block;">
+				<div class="w3-modal-content">
+					<header class="w3-container w3-teal"> 
+						<span onclick="document.getElementById('warningPopUp').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+						<h2>WARNING</h2>
+					</header>
+					<div class="w3-container" id="warningResult">
+						${loginResult }
+					</div>
+					<footer class="w3-container w3-teal w3-right-align"><h5>@jungduck92</h5></footer>
+				</div>
+			</div>
+		</c:if>
 	</div>
 </body>
 </html>
