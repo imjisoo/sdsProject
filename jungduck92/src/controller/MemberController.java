@@ -27,7 +27,7 @@ public class MemberController {
 	@RequestMapping("/joinForm.jd")
 	public String joinForm () {
 		
-		return "join_form";
+		return "main/main01_m01";
 		
 	}
 	
@@ -69,11 +69,11 @@ public class MemberController {
 		if (service.join(joinInfos)) {
 			
 			mv.addObject("memberId", joinInfos.get("userId").toString());
-			mv.setViewName("join_success");
+			mv.setViewName("main/main01_s01");
 			
 		} else {
 			
-			mv.setViewName("join_form");
+			mv.setViewName("main/main01_m01");
 			
 		}
 		
@@ -119,7 +119,7 @@ public class MemberController {
 	@RequestMapping("/findForm.jd")
 	public String findForm () {
 		
-		return "find_form";
+		return "main/main02_m01";
 		
 	}
 	
@@ -140,7 +140,7 @@ public class MemberController {
 			
 		}
 		
-		mv.setViewName("find_form");
+		mv.setViewName("main/main02_m01");
 		
 		return mv;
 		
@@ -156,12 +156,12 @@ public class MemberController {
 		if (findPwResult.get("findResult").toString().equals("false")) {
 			
 			mv.addObject("resultStatement", findPwResult.get("resultStatement"));
-			mv.setViewName("find_form");
+			mv.setViewName("main/main02_m01");
 			
 		} else {
 			
 			mv.addObject("memberIdx", findPwResult.get("memberIdx"));
-			mv.setViewName("change_pwd");
+			mv.setViewName("main/main02_s01");
 			
 		}
 		
@@ -176,11 +176,11 @@ public class MemberController {
 		
 		if (service.updateMemberPw(pwInfos)) {
 			
-			mv.setViewName("update_pw_success");
+			mv.setViewName("main/main02_s02");
 			
 		} else {
 			
-			mv.setViewName("change_pwd");
+			mv.setViewName("main/main02_s01");
 			
 		}
 		
