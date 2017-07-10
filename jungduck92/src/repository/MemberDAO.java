@@ -29,6 +29,22 @@ public class MemberDAO {
 		
 	}
 	
+	public MemberVO getMemberByEmail (String userEmail) {
+		
+		MemberMapper mapper = sessionTemplate.getMapper(MemberMapper.class);
+		
+		return mapper.getMemberByEmail(userEmail);
+		
+	}
+	
+	public int updateMemberPw (Map<String, Object> pwInfos) {
+		
+		MemberMapper mapper = sessionTemplate.getMapper(MemberMapper.class);
+		
+		return mapper.updateMemberPw(pwInfos);
+		
+	}
+	
 	public int createMember (Map<String, Object> memberInfos) {
 		
 		MemberMapper mapper = sessionTemplate.getMapper(MemberMapper.class);

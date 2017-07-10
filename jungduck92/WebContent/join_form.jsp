@@ -59,7 +59,6 @@
 					if (data.val == "false") {
 						
 						$("input[name='userId']").val("");
-						setTimeout(function() { $("input[name='userId']").focus() }, 1000);
 						
 						$("#idCheck").html(userId+"는 이미 사용 중인 아이디입니다.");
 						$("#idCheck").addClass("red");
@@ -81,21 +80,56 @@
 			
 		});
 		
+		$("input[name='userEmailId'], select[name='userEmailAddress']").change(function () {
+			
+			var userEmail = $("input[name='userEmailId']").val()+"@"+$("select[name='userEmailAddress']").val();
+			
+			$.ajax({
+				type : "POST",
+				url : "emailCheck.jd",
+				data : {"userEmail" : userEmail},
+				success : function (responseData) {
+					
+					var data = JSON.parse(responseData);
+					
+					if (data.val == "false") {
+						
+						$("input[name='userEmailId']").val("");
+						
+						$("#emailCheck").html("이미 사용 중인 이메일입니다.");
+						$("#emailCheck").addClass("red");
+						
+					} else {
+						
+						$("#emailCheck").html("사용 가능한 이메일입니다.");
+						$("#emailCheck").removeClass("red");
+						
+					}
+					
+				},
+				error : function (e) {
+					
+					alert(e.responseText);
+					
+				}
+			});
+			
+		});
+		
 		$("input[type='submit']").click(function () {
 			
 			var userId = $("input[name='userId']").val();
 			var userPw = $("input[name='userPw']").val();
 			var userPwCheck = $("input[name='userPwCheck']").val();
 			var userEmailId = $("input[name='userEmailId']").val();
-			var userType = $("input[name='userType']").val();
+			var userType = $("input[name='userType']:checked").val();
 			
 			if (userId.length == 0) {
 				
-				$("#warningResult").html("<h1 class='red'>INPUT USER ID</h1>");
+				$("#warningResult").html("<h1 class='red'>아이디를 입력하시오.</h1>");
 				$("#warningPopUp").css("display", "block");
 				
 				$("input[name='userId']").val("");
-				setTimeout(function() { $("input[name='userId']").focus() }, 1000);
 				
 				return false;
 				
@@ -105,11 +139,10 @@
 			
 			if (userId != trimUserId) {
 				
-				$("#warningResult").html("<h1 class='red'>NOT ALLOW SPACES IN ID</h1>");
+				$("#warningResult").html("<h1 class='red'>아이디에 공백이 포함되어 있습니다.</h1>");
 				$("#warningPopUp").css("display", "block");
 				
 				$("input[name='userId']").val("");
-				setTimeout(function() { $("input[name='userId']").focus() }, 1000);
 				
 				return false;
 				
@@ -122,7 +155,6 @@
 				
 				$("input[name='userPw']").val("");
 				$("input[name='userPwCheck']").val("");
-				setTimeout(function() { $("input[name='userPw']").focus() }, 1000);
 				
 				return false;
 				
@@ -154,7 +186,6 @@
 					
 					$("input[name='userPw']").val("");
 					$("input[name='userPwCheck']").val("");
-					setTimeout(function() { $("input[name='userPw']").focus() }, 1000);
 					
 					return false;
 					
@@ -166,8 +197,6 @@
 				
 				$("#warningResult").html("<h1 class='red'>이메일을 입력하시오</h1>");
 				$("#warningPopUp").css("display", "block");
-				
-				setTimeout(function() { $("input[name='userEmailId']").focus() }, 1000);
 				
 				return false;
 				
@@ -181,13 +210,12 @@
 				$("#warningPopUp").css("display", "block");
 				
 				$("input[name='userEmailId']").val("");
-				setTimeout(function() { $("input[name='userEmailId']").focus() }, 1000);
 				
 				return false;
 				
 			}
 			
-			if (userType.length == 0) {
+			if (typeof userType == "undefined") {
 				
 				$("#warningResult").html("<h1 class='red'>USER TYPE을 입력하시오</h1>");
 				$("#warningPopUp").css("display", "block");
@@ -196,7 +224,7 @@
 				
 			}
 			
-			return true;
+			return false;
 			
 		});
 		
@@ -242,6 +270,7 @@
 								<option value="naver.com">naver.com</option>
 								<option value="daum.net">daum.net</option>
 							</select>
+							<span id="emailCheck"></span>
 						</td>
 					</tr>
 					<tr>

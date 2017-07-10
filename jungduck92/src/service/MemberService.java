@@ -2,8 +2,6 @@ package service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +23,28 @@ public class MemberService {
 	public String idCheck (String userId) {
 		
 		MemberVO member = dao.getMemberById(userId);
+		
+		String result = "{";
+		
+		if (member == null) {
+			
+			result += "\"val\":\"true\"";
+			
+		} else {
+			
+			result += "\"val\":\"false\"";
+			
+		}
+		
+		result += "}";
+		
+		return result;
+		
+	}
+	
+	public String emailCheck (String userEmail) {
+		
+		MemberVO member = dao.getMemberByEmail(userEmail);
 		
 		String result = "{";
 		
@@ -104,12 +124,12 @@ public class MemberService {
 		
 		if (member == null) {
 			
-			result.put("loginResult", "false");
+			result.put("loginResult", false);
 			result.put("loginStatement", "<h1>아이디가 존재하지 않습니다</h1>");
 			
 		} else if (!member.getMemberPw().equals(userInfos.get("userPw").toString())) {
 			
-			result.put("loginResult", "false");
+			result.put("loginResult", false);
 			result.put("loginStatement", "<h1>아이디와 비밀번호가 일치하지 않습니다</h1>");
 			
 		} else {
@@ -129,11 +149,124 @@ public class MemberService {
 			}
 			
 			result.put("member", member);
-			result.put("loginResult", "true");
+			result.put("loginResult", true);
 			
 		}
 		
 		return result;
+		
+	}
+	
+	public Map<String, Object> findMemberId (String findIdEmail) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+		
+		if (findIdEmail.matches(regex)) {
+			
+			result.put("emailMathced", true);
+			
+			MemberVO member = dao.getMemberByEmail(findIdEmail);
+			
+			if (member == null) {
+				
+				result.put("resultStatement", "<h1>이메일에 해당하는 아이디가 존재하지 않습니다.</h1>");
+				
+			} else {
+				
+				result.put("resultStatement", "<h1>해당하는 아이디는 "+member.getMemberId()+"입니다.</h1>");
+				
+			}
+			
+		} else {
+			
+			result.put("emailMathced", false);
+			
+		}
+		
+		return result;
+		
+	}
+	
+	public Map<String, Object> findMemberPw (Map<String, Object> findPwInfos) {
+		
+		String findPwId = findPwInfos.get("findPwId").toString();
+		String findPwEmail = findPwInfos.get("findPwEmail").toString();
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+		
+		MemberVO memberById = dao.getMemberById(findPwId);
+		
+		if (memberById == null) {
+			
+			result.put("findResult", false);
+			result.put("resultStatement", "<h1>존재하지 않는 아이디입니다.</h1>");
+			
+		} else {
+			
+			if (!findPwEmail.matches(regex)) {
+				
+				result.put("findResult", false);
+				result.put("resultStatement", "<h1>올바르지 않은 이메일입니다.</h1>");
+				
+			} else {
+				
+				MemberVO memberByEmail = dao.getMemberByEmail(findPwEmail);
+				
+				if (memberByEmail == null) {
+					
+					result.put("findResult", false);
+					result.put("resultStatement", "<h1>존재하지 않는 이메일입니다.</h1>");
+					
+				} else {
+					
+					if (memberById.getMemberIdx().toString().equals(memberByEmail.getMemberIdx().toString())) {
+						
+						result.put("findResult", true);
+						result.put("memberIdx", memberById.getMemberIdx().toString());
+						
+					} else {
+						
+						result.put("findResult", false);
+						result.put("resultStatement", "<h1>회원 정보가 일치하지 않습니다.</h1>");
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		return result;
+		
+	}
+	
+	public boolean updateMemberPw (Map<String, Object> pwInfos) {
+		
+		String memberIdx = pwInfos.get("memberIdx").toString();
+		String userPw = pwInfos.get("userPw").toString();
+		
+		if (memberIdx.isEmpty() || userPw.isEmpty()) {
+			
+			return false;
+			
+		} else {
+			
+			if (dao.updateMemberPw(pwInfos) == 1) {
+				
+				return true;
+				
+			} else {
+				
+				return false;
+				
+			}
+			
+		}
 		
 	}
 	

@@ -46,6 +46,21 @@ public class MemberController {
 		
 	}
 	
+	@RequestMapping(value="/emailCheck.jd", method=RequestMethod.POST)
+	public void emailCheck (String userEmail, HttpServletResponse response) {
+		
+		try {
+			
+			response.getWriter().print(service.emailCheck(userEmail));
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			
+		}
+		
+	}
+	
 	@RequestMapping(value="/join.jd", method=RequestMethod.POST)
 	public ModelAndView join (@RequestParam Map<String, Object> joinInfos) {
 		
@@ -105,6 +120,71 @@ public class MemberController {
 	public String findForm () {
 		
 		return "find_form";
+		
+	}
+	
+	@RequestMapping(value="/findMemberId.jd", method=RequestMethod.POST)
+	public ModelAndView findMemberId (String findIdEmail) {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		Map<String, Object> findIdResult = service.findMemberId(findIdEmail);
+		
+		if (findIdResult.get("emailMathced").toString().equals("true")) {
+			
+			mv.addObject("resultStatement", findIdResult.get("resultStatement"));
+			
+		} else {
+			
+			mv.addObject("resultStatement", "<h1>이메일을 올바르게 입력하시오</h1>");
+			
+		}
+		
+		mv.setViewName("find_form");
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping(value="/findMemberPw.jd", method=RequestMethod.POST)
+	public ModelAndView findMemberPw (@RequestParam Map<String, Object> findPwInfos) {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		Map<String, Object> findPwResult = service.findMemberPw(findPwInfos);
+		
+		if (findPwResult.get("findResult").toString().equals("false")) {
+			
+			mv.addObject("resultStatement", findPwResult.get("resultStatement"));
+			mv.setViewName("find_form");
+			
+		} else {
+			
+			mv.addObject("memberIdx", findPwResult.get("memberIdx"));
+			mv.setViewName("change_pwd");
+			
+		}
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping(value="/updateMemberPw.jd", method=RequestMethod.POST)
+	public ModelAndView updateMemberPw (@RequestParam Map<String, Object> pwInfos) {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		if (service.updateMemberPw(pwInfos)) {
+			
+			mv.setViewName("update_pw_success");
+			
+		} else {
+			
+			mv.setViewName("change_pwd");
+			
+		}
+		
+		return mv;
 		
 	}
 	

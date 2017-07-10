@@ -8,7 +8,9 @@ public interface MemberMapper {
 	
 	public MemberVO getMemberById (String userId);
 	
-	public String createMemberIdx ();
+	public MemberVO getMemberByEmail (String userEmail);
+	
+	public int updateMemberPw (Map<String, Object> pwInfos);
 	
 	public int createMember (Map<String, Object> memberInfos);
 	

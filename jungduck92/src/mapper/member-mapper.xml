@@ -12,9 +12,21 @@
 		WHERE MEMBER_ID = #{userId}
 	</select>
 	
-	<select id="createMemberIdx" resultType="String">
-		
+	<select id="getMemberByEmail" parameterType="String" resultMap="memberResultMap">
+		SELECT MEMBER_IDX,
+			MEMBER_ID,
+			MEMBER_PW,
+			MEMBER_EMAIL,
+			MEMBER_TYPE
+		FROM MEMBER
+		WHERE MEMBER_EMAIL = #{userEmail}
 	</select>
+	
+	<update id="updateMemberPw" parameterType="java.util.Map">
+		UPDATE MEMBER
+		SET MEMBER_PW = #{userPw}
+		WHERE MEMBER_IDX = #{memberIdx}
+	</update>
 	
 	<insert id="createMember" parameterType="java.util.Map">
 		INSERT INTO MEMBER (
