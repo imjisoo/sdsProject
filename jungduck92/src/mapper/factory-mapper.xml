@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.FactoryMapper">
+	
+	<insert id="createProduct" parameterType="ProductVO">
+		INSERT INTO PRODUCT (
+			PRD_IDX,
+			PRD_NAME,
+			PRD_IMG,
+			PRD_THUMB,
+			PRD_PRICE,
+			PRD_COST,
+			PRD_QTY,
+			PRD_USEYN,
+			INPUT_ID,
+			INPUT_DATE
+		) VALUES (
+			(
+				SELECT 'PRD'||TO_CHAR(SYSDATE, 'YYMMDD')||DECODE(LPAD(MAX(SUBSTR(PRD_IDX, -3))+1, 3, 0), NULL, '001', LPAD(MAX(SUBSTR(PRD_IDX, -3))+1, 3, 0))
+				FROM PRODUCT
+				WHERE PRD_IDX LIKE '%'||TO_CHAR(SYSDATE, 'YYMMDD')||'%'
+			),
+			#{prdName}, 
+			#{prdImg}, 
+			#{prdThumb}, 
+			#{prdPrice}, 
+			#{prdCost}, 
+			#{prdQty}, 
+			#{prdUseYn}, 
+			#{inputId}, 
+			TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		)
+	</insert>
+	
+</mapper>

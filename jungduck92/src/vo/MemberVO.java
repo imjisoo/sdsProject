@@ -1,5 +1,17 @@
 package vo;
 
+/*
+
+MEMBER
+
+MEMBER_IDX
+MEMBER_ID
+MEMBER_PW
+MEMBER_EMAIL
+MEMBER_TYPE
+
+ */
+
 public class MemberVO {
 	
 	private String memberIdx;

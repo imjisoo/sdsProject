@@ -136,15 +136,15 @@ public class MemberService {
 			
 			if (member.getMemberType().equals("CUS")) {
 				
-				result.put("viewName", "cus_index");
+				result.put("viewName", "cus/cus_index");
 				
 			} else if (member.getMemberType().equals("VEN")) {
 				
-				result.put("viewName", "ven_index");
+				result.put("viewName", "ven/ven_index");
 				
 			} else if (member.getMemberType().equals("FAC")) {
 				
-				result.put("viewName", "fac_index");
+				result.put("viewName", "fac/fac_index");
 				
 			}
 			

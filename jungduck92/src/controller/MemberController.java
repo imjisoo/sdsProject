@@ -1,11 +1,10 @@
 package controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import repository.MemberDAO;
 import service.MemberService;
 import vo.MemberVO;
 
@@ -89,7 +87,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/login.jd", method=RequestMethod.POST)
-	public ModelAndView login (@RequestParam Map<String, Object> userInfos) {
+	public ModelAndView login (@RequestParam Map<String, Object> userInfos, HttpSession session) {
 		
 		ModelAndView mv = new ModelAndView();
 		
@@ -102,7 +100,11 @@ public class MemberController {
 			
 		} else if (login.get("loginResult").toString().equals("true")) {
 			
-			mv.addObject("member", login.get("member"));
+			MemberVO member = (MemberVO) login.get("member");
+			
+			session.setAttribute("userId", member.getMemberId());
+			
+			mv.addObject("member", member);
 			mv.setViewName(login.get("viewName").toString());
 			
 		} else {
