@@ -232,7 +232,7 @@
 </script>
 </head>
 <body>
-	<div class=w3-card-4 id="container">
+	<div class="w3-card-4" id="container">
 		<header class="w3-container w3-teal"><h1>SIGN UP</h1></header>
 		<div class="w3-container w3-margin">
 			<form action="join.jd" method="post">
