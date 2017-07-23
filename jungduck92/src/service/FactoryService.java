@@ -65,4 +65,23 @@ public class FactoryService {
 		
 	}
 	
+public List<ProductVO> getProductList(){
+		
+		return dao.getProductList();
+		
+	}
+	
+	public ProductVO getProductByIdx(String prdIdx){
+		
+		return dao.getProductByIdx(prdIdx);
+		
+	}
+	
+	public int updateProduct(ProductVO product){
+		
+		return dao.updateProduct(product);
+		
+	}
+	
+	
 }

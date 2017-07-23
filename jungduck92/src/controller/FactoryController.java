@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,20 @@ public class FactoryController {
 		
 	}
 	
+	@RequestMapping("/productList.jd")
+	public ModelAndView productList () {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		List<ProductVO> product_list = service.getProductList();
+		
+		mv.addObject("product_list", product_list);
+		
+		mv.setViewName("fac/fac01_m02");
+		
+		return mv;
+	}
+	
 	@RequestMapping("/productRegi.jd")
 	public String productRegi () {
 		
@@ -50,9 +66,42 @@ public class FactoryController {
 			
 		} else {
 			
-			mv.setViewName("fac/fac01_m01");
+			mv.setViewName("fac/fac01_s01");
 			
 		}
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping(value="/productUpdate.jd", method=RequestMethod.POST)
+	public ModelAndView productUpdate (String prdIdx) {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		ProductVO product = service.getProductByIdx(prdIdx);
+		
+		mv.addObject("product", product);
+		
+		mv.setViewName("fac/fac01_m03");
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping(value="/productUpdateResult.jd", method=RequestMethod.POST)
+	public ModelAndView productUpdateResult(ProductVO product){
+		
+		ModelAndView mv = new ModelAndView();
+		
+		System.out.println(product.getPrdImgFile());
+		System.out.println(product.getPrdImg());
+		
+		/*int updateResult = service.updateProduct(product);
+		
+		mv.addObject("updateResult", updateResult);
+		
+		mv.setViewName("fac/fac01_s03");*/
 		
 		return mv;
 		
