@@ -31,5 +31,69 @@
 			TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
 		)
 	</insert>
+ 		
+	<select id="getProductList" resultMap="productResult">
+		SELECT  
+				PRD_IDX,  
+				PRD_NAME,  
+				PRD_IMG,  
+				PRD_THUMB,  
+				PRD_PRICE,  
+				PRD_COST,  
+				PRD_QTY,  
+				INPUT_ID,  
+				INPUT_DATE,  
+				PRD_USEYN
+			FROM 
+				PRODUCT
+	</select>
+	
+	<select id="getProductByIdx" resultMap="productResult">
+		SELECT
+				PRD_IDX,  
+				PRD_NAME,  
+				PRD_IMG,  
+				PRD_THUMB,  
+				PRD_PRICE,  
+				PRD_COST,  
+				PRD_QTY,  
+				INPUT_ID,  
+				INPUT_DATE,  
+				PRD_USEYN
+			FROM 
+				PRODUCT
+			WHERE
+				PRD_IDX = #{prdIdx}
+	</select>
+	
+	<update id="updateProduct" parameterType="productVO">
+		UPDATE
+				PRODUCT
+			SET
+				PRD_NAME = #{prdName},  
+				PRD_IMG = #{prdImg},  
+				PRD_THUMB = #{prdThumb},  
+				PRD_PRICE = #{prdPrice},  
+				PRD_COST = #{prdCost},  
+				PRD_QTY = #{prdQty},  
+				INPUT_ID = #{inputId},  
+				INPUT_DATE = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),  
+				PRD_USEYN = #{prdUseYn}
+			WHERE
+				PRD_IDX = #{prdIdx}
+	</update>
+	
+	<resultMap type="ProductVO" id="productResult">
+		<result column="PRD_IDX" property="prdIdx"/>
+		<result column="PRD_NAME" property="prdName"/>
+		<result column="PRD_IMG" property="prdImg"/>
+		<result column="PRD_THUMB" property="prdThumb"/>
+		<result column="PRD_PRICE" property="prdPrice"/>
+		<result column="PRD_COST" property="prdCost"/>
+		<result column="PRD_QTY" property="prdQty"/>
+		<result column="INPUT_ID" property="inputId"/>
+		<result column="INPUT_DATE" property="inputDate"/>
+		<result column="PRD_USEYN" property="prdUseYn"/>
+	</resultMap>
 	
 </mapper>
